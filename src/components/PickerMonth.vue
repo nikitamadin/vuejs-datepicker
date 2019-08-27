@@ -1,13 +1,13 @@
 <template>
   <div :class="[calendarClass, 'vdp-datepicker__calendar']" v-show="showMonthView" :style="calendarStyle" @mousedown.prevent>
     <slot name="beforeCalendarHeader"></slot>
-    <header>
-    </header>
-    <span class="cell month"
+    <div class="vdp-datepicker__body vdp-datepicker__body_picker_month">
+      <span class="cell month"
       v-for="month in months"
       :key="month.timestamp"
       :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
       @click.stop="selectMonth(month)">{{ month.month }}</span>
+    </div>
   </div>
 </template>
 <script>

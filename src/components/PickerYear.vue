@@ -1,23 +1,26 @@
 <template>
   <div :class="[calendarClass, 'vdp-datepicker__calendar']" v-show="showYearView" :style="calendarStyle" @mousedown.prevent>
     <slot name="beforeCalendarHeader"></slot>
-    <header>
+    <header class="vdp-datepicker__header">
       <span
         @click="isRtl ? nextDecade() : previousDecade()"
         class="prev"
         :class="{'disabled': isLeftNavDisabled}">&lt;</span>
-      <span>{{ getPageDecade }}</span>
+
       <span
         @click="isRtl ? previousDecade() : nextDecade()"
         class="next"
         :class="{'disabled': isRightNavDisabled}">&gt;</span>
     </header>
-    <span
+
+    <div class="vdp-datepicker__body vdp-datepicker__body_picker_year">
+      <span
       class="cell year"
       v-for="year in years"
       :key="year.timestamp"
       :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
       @click.stop="selectYear(year)">{{ year.year }}</span>
+    </div>
   </div>
 </template>
 <script>
@@ -45,7 +48,7 @@ export default {
       let dObj = this.useUtc
         ? new Date(Date.UTC(Math.floor(d.getUTCFullYear() / 10) * 10, d.getUTCMonth(), d.getUTCDate()))
         : new Date(Math.floor(d.getFullYear() / 10) * 10, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 25; i++) {
         years.push({
           year: this.utils.getFullYear(dObj),
           timestamp: dObj.getTime(),
@@ -55,15 +58,6 @@ export default {
         this.utils.setFullYear(dObj, this.utils.getFullYear(dObj) + 1)
       }
       return years
-    },
-    /**
-     * @return {String}
-     */
-    getPageDecade () {
-      const decadeStart = Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10
-      const decadeEnd = decadeStart + 9
-      const yearSuffix = this.translation.yearSuffix
-      return `${decadeStart} - ${decadeEnd}${yearSuffix}`
     },
     /**
      * Is the left hand navigation button disabled?

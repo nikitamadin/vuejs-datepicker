@@ -29,7 +29,6 @@
       <slot name="afterDateInput" slot="afterDateInput"></slot>
     </date-input>
 
-
     <!-- Day View -->
     <picker-day
       v-if="allowedToShowView('day')"
@@ -95,7 +94,7 @@
   </div>
 </template>
 <script>
-import en from '../locale/translations/en'
+import ru from '../locale/translations/ru'
 import DateInput from './DateInput.vue'
 import PickerDay from './PickerDay.vue'
 import PickerMonth from './PickerMonth.vue'
@@ -117,11 +116,11 @@ export default {
     id: String,
     format: {
       type: [String, Function],
-      default: 'dd MMM yyyy'
+      default: 'dd.MM.yyyy'
     },
     language: {
       type: Object,
-      default: () => en
+      default: () => ru
     },
     openDate: {
       validator: val => utils.validateDateInput(val)

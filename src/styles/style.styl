@@ -10,54 +10,52 @@
     position absolute
     z-index 100
     padding 23px 30px
-    color rgba(#000, .5)
+    color #7e8eae
     background #fff
     width 345px
     font-size 18px
     box-shadow 0 8px 54px rgba(#000, .1)
     border-radius 4px
-    header
-        display block
-        line-height 40px
-        span
-            display inline-block
-            text-align center
-            width (100 - (100/7)*2)%
-            float left
 
-        .prev
-        .next
-            width (100/7)%
-            float left
-            text-indent -10000px
-            position relative
-            &:after
-                content ''
-                position absolute
-                left 50%
-                top 50%
-                transform translateX(-50%) translateY(-50%)
-                border 6px solid transparent
+    .prev
+    .next
+        width 20px
+        text-indent -10000px
+        position relative
+        color rgba(#7e8eae, .2)
 
-        .prev
-            &:after
-                border-right 10px solid #000
-                margin-left -5px
-            &.disabled:after
-                border-right 10px solid #ddd
-        .next
-            &:after
-                border-left 10px solid #000
-                margin-left 5px
-            &.disabled:after
-                border-left 10px solid #ddd
+        &:after
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          content ''
+          width 0
+          height 0
+          border-style solid
 
-        .prev:not(.disabled)
-        .next:not(.disabled)
-        .up:not(.disabled)
-            cursor pointer
-            &:hover
-                background #eee
+    .prev
+        margin-left 10px
+
+        &:after
+          border-width 9px 10px 9px 0
+          border-color transparent currentColor transparent transparent
+        &.disabled:after
+            border-right 10px solid #ddd
+    .next
+        margin-right 10px
+        &:after
+            border-width 9px 0 9px 10px
+            border-color transparent transparent transparent currentColor
+        &.disabled:after
+            border-left 10px solid #ddd
+
+    .prev:not(.disabled)
+    .next:not(.disabled)
+    .up:not(.disabled)
+        cursor pointer
+        &:hover
+            color #7e8eae
 
     .disabled
         color #ddd
@@ -76,18 +74,16 @@
         line-height 40px
         text-align center
         vertical-align middle
-        border 1px solid transparent
         border-radius 4px
         &:not(.blank):not(.disabled).day
         &:not(.blank):not(.disabled).month
         &:not(.blank):not(.disabled).year
             cursor pointer
             &:hover
-                border 1px solid #4bd
+                background: rgba(#dceaff, .3);
         &.selected
+            color #000
             background #dceaff
-            &:hover
-                background #4bd
             &.highlighted
                 background #4bd
         &.highlighted
@@ -108,9 +104,11 @@
             &:hover
                 background inherit
 
-    .month,
+    .month
+      width 33.333%
+
     .year
-        width 33.333%
+      width 20%
 
 .vdp-datepicker__clear-button
 .vdp-datepicker__calendar-button
@@ -120,9 +118,19 @@
       color #999
       cursor default
 
+.vdp-datepicker__header
+  display flex
+  justify-content space-between
+  line-height 40px
+
+.vdp-datepicker__body
+  display flex
+  flex-wrap wrap
+
 .vdp-datepicker__control
   padding 0
   cursor pointer
   border none
+  font-size 18px
   color #7e8eae
   text-transform uppercase

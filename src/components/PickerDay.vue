@@ -1,7 +1,7 @@
 <template>
   <div :class="[calendarClass, 'vdp-datepicker__calendar']" v-show="showDayView" :style="calendarStyle" @mousedown.prevent>
     <slot name="beforeCalendarHeader"></slot>
-    <header style="display: flex; align-items: center; justify-content: space-between;">
+    <header class="vdp-datepicker__header">
       <button
         class="vdp-datepicker__control"
         type="button"
@@ -15,11 +15,11 @@
         type="button"
         @click="showMonthCalendar"
       >
-        {{ isYmd ? currYearName : currMonthName }}
+        {{ currMonthName }}
       </button>
 
     </header>
-    <div :class="isRtl ? 'flex-rtl' : ''">
+    <div class="vdp-datepicker__body vdp-datepicker__body_picker_day" :class="isRtl ? 'flex-rtl' : ''">
 
       <template v-if="blankDays > 0">
         <span class="cell day blank" v-for="d in blankDays" :key="d.timestamp"></span>
@@ -124,8 +124,7 @@ export default {
      * @return {String}
      */
     currMonthName () {
-      const monthName = this.fullMonthName ? this.translation.months : this.translation.monthsAbbr
-      return this.utils.getMonthNameAbbr(this.utils.getMonth(this.pageDate), monthName)
+      return this.utils.getMonthName(this.utils.getMonth(this.pageDate), this.translation.months)
     },
     /**
      * Gets the name of the year that current page is on

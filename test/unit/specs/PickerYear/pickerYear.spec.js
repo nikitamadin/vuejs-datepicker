@@ -1,6 +1,6 @@
 import PickerYear from '@/components/PickerYear.vue'
-import {shallow} from '@vue/test-utils'
-import {en} from '@/locale'
+import { shallow } from '@vue/test-utils'
+import { en } from '@/locale'
 
 describe('PickerYear', () => {
   let wrapper
@@ -34,19 +34,8 @@ describe('PickerYear', () => {
     expect(wrapper.emitted().changedDecade).toBeTruthy()
   })
 
-  it('formats the decade range', () => {
-    wrapper.setProps({
-      pageDate: new Date(2021, 1, 1)
-    })
-    expect(wrapper.vm.getPageDecade).toEqual('2020 - 2029')
-    wrapper.setProps({
-      pageDate: new Date(2001, 1, 1)
-    })
-    expect(wrapper.vm.getPageDecade).toEqual('2000 - 2009')
-  })
-
   it('emits an event when selected', () => {
-    wrapper.vm.selectYear({isDisabled: false})
+    wrapper.vm.selectYear({ isDisabled: false })
     expect(wrapper.emitted().selectYear).toBeTruthy()
   })
 })
