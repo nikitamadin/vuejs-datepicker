@@ -51,6 +51,7 @@
       @changedMonth="handleChangedMonthFromDayPicker"
       @selectDate="selectDate"
       @showMonthCalendar="showMonthCalendar"
+      @showYearCalendar="showYearCalendar"
       @selectedDisabled="selectDisabledDate">
       <slot name="beforeCalendarHeader" slot="beforeCalendarHeader"></slot>
     </picker-day>
@@ -363,27 +364,13 @@ export default {
      * @param {Object} month
      */
     selectMonth (month) {
-      const date = new Date(month.timestamp)
-      if (this.allowedToShowView('day')) {
-        this.setPageDate(date)
-        this.$emit('changedMonth', month)
-        this.showDayCalendar()
-      } else {
-        this.selectDate(month)
-      }
+      this.selectDate(month)
     },
     /**
      * @param {Object} year
      */
     selectYear (year) {
-      const date = new Date(year.timestamp)
-      if (this.allowedToShowView('month')) {
-        this.setPageDate(date)
-        this.$emit('changedYear', year)
-        this.showMonthCalendar()
-      } else {
-        this.selectDate(year)
-      }
+      this.selectDate(year)
     },
     /**
      * Set the datepicker value

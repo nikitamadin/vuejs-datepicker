@@ -1,5 +1,5 @@
 import Datepicker from '@/components/Datepicker.vue'
-import {mount} from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 
 describe('Datepicker with restricted views', () => {
   let wrapper
@@ -21,9 +21,8 @@ describe('Datepicker with restricted views', () => {
       }
     })
     const date = new Date(2016, 9, 12)
-    wrapper.vm.selectYear({timestamp: date.getTime()})
-    expect(wrapper.vm.isOpen).toEqual(true)
-    wrapper.vm.selectMonth({timestamp: date.getTime()})
+    wrapper.vm.selectYear({ timestamp: date.getTime() })
+    wrapper.vm.selectMonth({ timestamp: date.getTime() })
     expect(date.getFullYear()).toEqual(wrapper.vm.selectedDate.getFullYear())
     expect(date.getMonth()).toEqual(wrapper.vm.selectedDate.getMonth())
     expect(wrapper.vm.isOpen).toEqual(false)
@@ -37,7 +36,7 @@ describe('Datepicker with restricted views', () => {
       }
     })
     const date = new Date(2016, 9, 12)
-    wrapper.vm.selectYear({timestamp: date.getTime()})
+    wrapper.vm.selectYear({ timestamp: date.getTime() })
     expect(wrapper.vm.isOpen).toEqual(false)
     expect(date.getFullYear()).toEqual(wrapper.vm.selectedDate.getFullYear())
   })
@@ -99,9 +98,17 @@ describe('Datepicker with restricted views', () => {
       }
     })
     wrapper.vm.showCalendar()
-    expect(wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar').length).toEqual(1)
-    expect(wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.month').length).toEqual(0)
-    expect(wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.year').length).toEqual(0)
+    expect(
+      wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar').length
+    ).toEqual(1)
+    expect(
+      wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.month')
+        .length
+    ).toEqual(0)
+    expect(
+      wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.year')
+        .length
+    ).toEqual(0)
     expect(wrapper.vm.showMonthCalendar()).toEqual(false)
 
     wrapper = mount(Datepicker, {
@@ -111,8 +118,16 @@ describe('Datepicker with restricted views', () => {
       }
     })
     wrapper.vm.showCalendar()
-    expect(wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar').length).toEqual(2)
-    expect(wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.day').length).toEqual(0)
-    expect(wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.year').length).toBeGreaterThan(0)
+    expect(
+      wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar').length
+    ).toEqual(2)
+    expect(
+      wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.day')
+        .length
+    ).toEqual(0)
+    expect(
+      wrapper.vm.$el.querySelectorAll('.vdp-datepicker__calendar .cell.year')
+        .length
+    ).toBeGreaterThan(0)
   })
 })

@@ -1,6 +1,6 @@
 import PickerDay from '@/components/PickerDay.vue'
-import {shallow} from '@vue/test-utils'
-import {en} from '@/locale'
+import { shallow } from '@vue/test-utils'
+import { en } from '@/locale'
 
 describe('PickerDay: DOM', () => {
   let wrapper
@@ -25,17 +25,11 @@ describe('PickerDay: DOM', () => {
   })
 
   it('emits an event when selected', () => {
-    wrapper.vm.selectDate({isDisabled: false})
+    wrapper.vm.selectDate({ isDisabled: false })
     expect(wrapper.emitted().selectDate).toBeTruthy()
   })
 
   it('knows the current page month', () => {
     expect(wrapper.vm.getPageMonth()).toEqual(1)
-  })
-
-  it('emits show year calendar event when clicked on the year', () => {
-    const yearBtn = wrapper.find('.day__month_btn')
-    yearBtn.trigger('click')
-    expect(wrapper.emitted().showMonthCalendar).toBeTruthy()
   })
 })

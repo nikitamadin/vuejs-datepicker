@@ -9,9 +9,13 @@
 .vdp-datepicker__calendar
     position absolute
     z-index 100
-    background white
-    width 300px
-    border 1px solid #ccc
+    padding 23px 30px
+    color rgba(#000, .5)
+    background #fff
+    width 345px
+    font-size 18px
+    box-shadow 0 8px 54px rgba(#000, .1)
+    border-radius 4px
     header
         display block
         line-height 40px
@@ -68,10 +72,12 @@
         padding 0 5px
         width (100/7)%
         height 40px
+        font-size 18px
         line-height 40px
         text-align center
         vertical-align middle
         border 1px solid transparent
+        border-radius 4px
         &:not(.blank):not(.disabled).day
         &:not(.blank):not(.disabled).month
         &:not(.blank):not(.disabled).year
@@ -79,7 +85,7 @@
             &:hover
                 border 1px solid #4bd
         &.selected
-            background #4bd
+            background #dceaff
             &:hover
                 background #4bd
             &.highlighted
@@ -113,3 +119,10 @@
     &.disabled
       color #999
       cursor default
+
+.vdp-datepicker__control
+  padding 0
+  cursor pointer
+  border none
+  color #7e8eae
+  text-transform uppercase

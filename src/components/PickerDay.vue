@@ -1,23 +1,30 @@
 <template>
   <div :class="[calendarClass, 'vdp-datepicker__calendar']" v-show="showDayView" :style="calendarStyle" @mousedown.prevent>
     <slot name="beforeCalendarHeader"></slot>
-    <header>
-      <span
-        @click="isRtl ? nextMonth() : previousMonth()"
-        class="prev"
-        :class="{'disabled': isLeftNavDisabled}">&lt;</span>
-      <span class="day__month_btn" @click="showMonthCalendar" :class="allowedToShowView('month') ? 'up' : ''">{{ isYmd ? currYearName : currMonthName }} {{ isYmd ? currMonthName : currYearName }}</span>
-      <span
-        @click="isRtl ? previousMonth() : nextMonth()"
-        class="next"
-        :class="{'disabled': isRightNavDisabled}">&gt;</span>
+    <header style="display: flex; align-items: center; justify-content: space-between;">
+      <button
+        class="vdp-datepicker__control"
+        type="button"
+        @click="showYearCalendar"
+      >
+        {{ isYmd ? currMonthName : currYearName }}
+      </button>
+
+      <button
+        class="vdp-datepicker__control"
+        type="button"
+        @click="showMonthCalendar"
+      >
+        {{ isYmd ? currYearName : currMonthName }}
+      </button>
+
     </header>
     <div :class="isRtl ? 'flex-rtl' : ''">
-      <span class="cell day-header" v-for="d in daysOfWeek" :key="d.timestamp">{{ d }}</span>
+
       <template v-if="blankDays > 0">
         <span class="cell day blank" v-for="d in blankDays" :key="d.timestamp"></span>
-      </template><!--
-      --><span class="cell day"
+      </template>
+        <span class="cell day"
           v-for="day in days"
           :key="day.timestamp"
           :class="dayClasses(day)"
@@ -167,6 +174,12 @@ export default {
      */
     getPageMonth () {
       return this.utils.getMonth(this.pageDate)
+    },
+    /**
+     * Emits an event that shows the year calendar
+     */
+    showYearCalendar () {
+      this.$emit('showYearCalendar')
     },
     /**
      * Emit an event to show the month picker
