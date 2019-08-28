@@ -17,6 +17,7 @@
       <span
       class="cell year"
       v-for="year in years"
+      v-show="!year.isDisabled"
       :key="year.timestamp"
       :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
       @click.stop="selectYear(year)">{{ year.year }}</span>

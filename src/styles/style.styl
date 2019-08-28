@@ -76,12 +76,12 @@
         vertical-align middle
         border-radius 4px
         &:not(.blank):not(.disabled).day
-        &:not(.blank):not(.disabled).month
         &:not(.blank):not(.disabled).year
             cursor pointer
             &:hover
                 background: rgba(#dceaff, .3);
-        &.selected
+        &.day.selected,
+        &.year.selected
             color #000
             background #dceaff
             &.highlighted
@@ -96,7 +96,6 @@
             &:hover
                 background inherit
 
-
         &.day-header
             font-size 75%
             white-space nowrap
@@ -104,8 +103,23 @@
             &:hover
                 background inherit
 
+        &__inner
+          padding 0 12px
+          display inline-block
+          cursor pointer
+          border-radius 4px
+          text-transform uppercase
+          line-height 37px
+          &:hover
+              background: rgba(#dceaff, .3);
+
+        &.month.selected .cell__inner
+          color #000
+          background #dceaff
+
     .month
-      width 33.333%
+      width 50%
+      text-align left
 
     .year
       width 20%

@@ -363,13 +363,27 @@ export default {
      * @param {Object} month
      */
     selectMonth (month) {
-      this.selectDate(month)
+      const date = new Date(month.timestamp)
+      if (this.allowedToShowView('day')) {
+        this.setPageDate(date)
+        this.$emit('changedMonth', month)
+        this.showDayCalendar()
+      } else {
+        this.selectDate(month)
+      }
     },
     /**
      * @param {Object} year
      */
     selectYear (year) {
-      this.selectDate(year)
+      const date = new Date(year.timestamp)
+      if (this.allowedToShowView('month')) {
+        this.setPageDate(date)
+        this.$emit('changedYear', year)
+        this.showDayCalendar()
+      } else {
+        this.selectDate(year)
+      }
     },
     /**
      * Set the datepicker value
