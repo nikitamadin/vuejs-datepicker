@@ -3,14 +3,14 @@
     <slot name="beforeCalendarHeader"></slot>
     <header class="vdp-datepicker__header">
       <span
-        @click="isRtl ? nextDecade() : previousDecade()"
+        @click="isRtl ? previousDecade() : nextDecade()"
         class="prev"
-        :class="{'disabled': isLeftNavDisabled}">&lt;</span>
+        :class="{'disabled': isRightNavDisabled}">&gt;</span>
 
       <span
-        @click="isRtl ? previousDecade() : nextDecade()"
+        @click="isRtl ? nextDecade() : previousDecade()"
         class="next"
-        :class="{'disabled': isRightNavDisabled}">&gt;</span>
+        :class="{'disabled': isLeftNavDisabled}">&lt;</span>
     </header>
 
     <div class="vdp-datepicker__body vdp-datepicker__body_picker_year">
@@ -43,12 +43,13 @@ export default {
   },
   computed: {
     years () {
-      const d = this.pageDate
+      // const d = this.pageDate
       let years = []
       // set up a new date object to the beginning of the current 'page'7
-      let dObj = this.useUtc
-        ? new Date(Date.UTC(Math.floor(d.getUTCFullYear() / 10) * 10, d.getUTCMonth(), d.getUTCDate()))
-        : new Date(Math.floor(d.getFullYear() / 10) * 10, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
+      // let dObj = this.useUtc
+      //   ? new Date(Date.UTC(Math.floor(d.getUTCFullYear() / 10) * 10, d.getUTCMonth(), d.getUTCDate()))
+      //   : new Date(Math.floor(d.getFullYear()), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
+      let dObj = new Date(Date.now())
       for (let i = 0; i < 25; i++) {
         years.push({
           year: this.utils.getFullYear(dObj),
@@ -56,7 +57,7 @@ export default {
           isSelected: this.isSelectedYear(dObj),
           isDisabled: this.isDisabledYear(dObj)
         })
-        this.utils.setFullYear(dObj, this.utils.getFullYear(dObj) + 1)
+        this.utils.setFullYear(dObj, this.utils.getFullYear(dObj) - 1)
       }
       return years
     },
