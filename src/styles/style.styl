@@ -109,8 +109,9 @@
           border-radius 4px
           text-transform uppercase
           line-height 37px
-          &:hover
-              background: rgba(#dceaff, .3);
+
+        &.month:not(.disabled) .cell__inner:hover
+          background: rgba(#dceaff, .3);
 
         &.month.selected .cell__inner
           color #000

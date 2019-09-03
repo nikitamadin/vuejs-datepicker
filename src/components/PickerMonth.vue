@@ -4,7 +4,6 @@
     <div class="vdp-datepicker__body vdp-datepicker__body_picker_month">
       <span class="cell month"
       v-for="month in months"
-      v-show="!month.isDisabled"
       :key="month.timestamp"
       :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
       @click.stop="selectMonth(month)">
