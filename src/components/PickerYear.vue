@@ -1,26 +1,39 @@
 <template>
-  <div :class="[calendarClass, 'vdp-datepicker__calendar']" v-show="showYearView" :style="calendarStyle" @mousedown.prevent>
+  <div
+    :class="[calendarClass, 'vdp-datepicker__calendar']"
+    v-show="showYearView"
+    :style="calendarStyle"
+    @mousedown.prevent
+  >
     <slot name="beforeCalendarHeader"></slot>
-    <header class="vdp-datepicker__header">
+    <header class="vdp-datepicker__header vdp-datepicker__header_full-date" v-if="showDateHeader">
+      <span>{{ currDay }}</span>
+      <span>{{ currMonthName }}</span>
+      <span>{{ currYearName }}</span>
+    </header>
+    <header class="vdp-datepicker__header" v-else>
       <span
         @click="isRtl ? previousDecade() : nextDecade()"
         class="prev"
-        :class="{'disabled': isRightNavDisabled}">&gt;</span>
+        :class="{'disabled': isRightNavDisabled}"
+      >&gt;</span>
 
       <span
         @click="isRtl ? nextDecade() : previousDecade()"
         class="next"
-        :class="{'disabled': isLeftNavDisabled}">&lt;</span>
+        :class="{'disabled': isLeftNavDisabled}"
+      >&lt;</span>
     </header>
 
     <div class="vdp-datepicker__body vdp-datepicker__body_picker_year">
       <span
-      class="cell year"
-      v-for="year in years"
-      v-show="!year.isDisabled"
-      :key="year.timestamp"
-      :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
-      @click.stop="selectYear(year)">{{ year.year }}</span>
+        class="cell year"
+        v-for="year in years"
+        v-show="!year.isDisabled"
+        :key="year.timestamp"
+        :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
+        @click.stop="selectYear(year)"
+      >{{ year.year }}</span>
     </div>
   </div>
 </template>
@@ -28,6 +41,7 @@
 import { makeDateUtils } from '../utils/DateUtils'
 export default {
   props: {
+    showDateHeader: Boolean,
     showYearView: Boolean,
     selectedDate: Date,
     pageDate: Date,
@@ -78,6 +92,31 @@ export default {
       return this.isRtl
         ? this.isPreviousDecadeDisabled(this.pageTimestamp)
         : this.isNextDecadeDisabled(this.pageTimestamp)
+    },
+    currDay () {
+      if (this.selectedDate) {
+        return this.utils.getDate(this.selectedDate)
+      }
+
+      return 1
+    },
+    /**
+     * Gets the name of the month the current page is on
+     * @return {String}
+     */
+    currMonthName () {
+      return this.utils.getMonthName(
+        this.utils.getMonth(this.pageDate),
+        this.translation.months
+      )
+    },
+    /**
+     * Gets the name of the year that current page is on
+     * @return {Number}
+     */
+    currYearName () {
+      const yearSuffix = this.translation.yearSuffix
+      return `${this.utils.getFullYear(this.pageDate)}${yearSuffix}`
     }
   },
   data () {
@@ -109,7 +148,8 @@ export default {
         return false
       }
       const disabledYear = this.utils.getFullYear(this.disabledDates.to)
-      const lastYearInPreviousPage = Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10 - 1
+      const lastYearInPreviousPage =
+        Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10 - 1
       return disabledYear > lastYearInPreviousPage
     },
     nextDecade () {
@@ -123,7 +163,8 @@ export default {
         return false
       }
       const disabledYear = this.utils.getFullYear(this.disabledDates.from)
-      const firstYearInNextPage = Math.ceil(this.utils.getFullYear(this.pageDate) / 10) * 10
+      const firstYearInNextPage =
+        Math.ceil(this.utils.getFullYear(this.pageDate) / 10) * 10
       return disabledYear < firstYearInNextPage
     },
 
@@ -133,7 +174,11 @@ export default {
      * @return {Boolean}
      */
     isSelectedYear (date) {
-      return this.selectedDate && this.utils.getFullYear(this.selectedDate) === this.utils.getFullYear(date)
+      return (
+        this.selectedDate &&
+        this.utils.getFullYear(this.selectedDate) ===
+          this.utils.getFullYear(date)
+      )
     },
     /**
      * Whether a year is disabled
@@ -146,18 +191,33 @@ export default {
         return false
       }
 
-      if (typeof this.disabledDates.to !== 'undefined' && this.disabledDates.to) {
-        if (this.utils.getFullYear(date) < this.utils.getFullYear(this.disabledDates.to)) {
+      if (
+        typeof this.disabledDates.to !== 'undefined' &&
+        this.disabledDates.to
+      ) {
+        if (
+          this.utils.getFullYear(date) <
+          this.utils.getFullYear(this.disabledDates.to)
+        ) {
           disabledDates = true
         }
       }
-      if (typeof this.disabledDates.from !== 'undefined' && this.disabledDates.from) {
-        if (this.utils.getFullYear(date) > this.utils.getFullYear(this.disabledDates.from)) {
+      if (
+        typeof this.disabledDates.from !== 'undefined' &&
+        this.disabledDates.from
+      ) {
+        if (
+          this.utils.getFullYear(date) >
+          this.utils.getFullYear(this.disabledDates.from)
+        ) {
           disabledDates = true
         }
       }
 
-      if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date)) {
+      if (
+        typeof this.disabledDates.customPredictor === 'function' &&
+        this.disabledDates.customPredictor(date)
+      ) {
         disabledDates = true
       }
 
@@ -166,5 +226,4 @@ export default {
   }
 }
 // eslint-disable-next-line
-;
 </script>

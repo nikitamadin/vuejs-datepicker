@@ -1,12 +1,24 @@
 <template>
-  <div :class="[calendarClass, 'vdp-datepicker__calendar']" v-show="showMonthView" :style="calendarStyle" @mousedown.prevent>
+  <div
+    :class="[calendarClass, 'vdp-datepicker__calendar']"
+    v-show="showMonthView"
+    :style="calendarStyle"
+    @mousedown.prevent
+  >
     <slot name="beforeCalendarHeader"></slot>
+    <header class="vdp-datepicker__header vdp-datepicker__header_full-date" v-if="showDateHeader">
+      <span>{{ currDay }}</span>
+      <span>{{ currMonthName }}</span>
+      <span @click="showYearCalendar">{{ currYearName }}</span>
+    </header>
     <div class="vdp-datepicker__body vdp-datepicker__body_picker_month">
-      <span class="cell month"
-      v-for="month in months"
-      :key="month.timestamp"
-      :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
-      @click.stop="selectMonth(month)">
+      <span
+        class="cell month"
+        v-for="month in months"
+        :key="month.timestamp"
+        :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
+        @click.stop="selectMonth(month)"
+      >
         <span class="cell__inner">{{ month.month }}</span>
       </span>
     </div>
@@ -16,6 +28,7 @@
 import { makeDateUtils } from '../utils/DateUtils'
 export default {
   props: {
+    showDateHeader: Boolean,
     showMonthView: Boolean,
     selectedDate: Date,
     pageDate: Date,
@@ -41,7 +54,13 @@ export default {
       // set up a new date object to the beginning of the current 'page'
       let dObj = this.useUtc
         ? new Date(Date.UTC(d.getUTCFullYear(), 0, d.getUTCDate()))
-        : new Date(d.getFullYear(), 0, d.getDate(), d.getHours(), d.getMinutes())
+        : new Date(
+            d.getFullYear(),
+            0,
+            d.getDate(),
+            d.getHours(),
+            d.getMinutes()
+          )
       for (let i = 0; i < 12; i++) {
         months.push({
           month: this.utils.getMonthName(i, this.translation.months),
@@ -53,11 +72,28 @@ export default {
       }
       return months
     },
+    currDay () {
+      if (this.selectedDate) {
+        return this.utils.getDate(this.selectedDate)
+      }
+
+      return 1
+    },
     /**
-     * Get year name on current page.
+     * Gets the name of the month the current page is on
      * @return {String}
      */
-    pageYearName () {
+    currMonthName () {
+      return this.utils.getMonthName(
+        this.utils.getMonth(this.pageDate),
+        this.translation.months
+      )
+    },
+    /**
+     * Gets the name of the year that current page is on
+     * @return {Number}
+     */
+    currYearName () {
       const yearSuffix = this.translation.yearSuffix
       return `${this.utils.getFullYear(this.pageDate)}${yearSuffix}`
     },
@@ -116,7 +152,10 @@ export default {
       if (!this.disabledDates || !this.disabledDates.to) {
         return false
       }
-      return this.utils.getFullYear(this.disabledDates.to) >= this.utils.getFullYear(this.pageDate)
+      return (
+        this.utils.getFullYear(this.disabledDates.to) >=
+        this.utils.getFullYear(this.pageDate)
+      )
     },
     /**
      * Increments the year
@@ -134,7 +173,10 @@ export default {
       if (!this.disabledDates || !this.disabledDates.from) {
         return false
       }
-      return this.utils.getFullYear(this.disabledDates.from) <= this.utils.getFullYear(this.pageDate)
+      return (
+        this.utils.getFullYear(this.disabledDates.from) <=
+        this.utils.getFullYear(this.pageDate)
+      )
     },
     /**
      * Emits an event that shows the year calendar
@@ -148,9 +190,12 @@ export default {
      * @return {Boolean}
      */
     isSelectedMonth (date) {
-      return (this.selectedDate &&
-        this.utils.getFullYear(this.selectedDate) === this.utils.getFullYear(date) &&
-        this.utils.getMonth(this.selectedDate) === this.utils.getMonth(date))
+      return (
+        this.selectedDate &&
+        this.utils.getFullYear(this.selectedDate) ===
+          this.utils.getFullYear(date) &&
+        this.utils.getMonth(this.selectedDate) === this.utils.getMonth(date)
+      )
     },
     /**
      * Whether a month is disabled
@@ -164,24 +209,41 @@ export default {
         return false
       }
 
-      if (typeof this.disabledDates.to !== 'undefined' && this.disabledDates.to) {
+      if (
+        typeof this.disabledDates.to !== 'undefined' &&
+        this.disabledDates.to
+      ) {
         if (
-          (this.utils.getMonth(date) < this.utils.getMonth(this.disabledDates.to) && this.utils.getFullYear(date) <= this.utils.getFullYear(this.disabledDates.to)) ||
-          this.utils.getFullYear(date) < this.utils.getFullYear(this.disabledDates.to)
+          (this.utils.getMonth(date) <
+            this.utils.getMonth(this.disabledDates.to) &&
+            this.utils.getFullYear(date) <=
+              this.utils.getFullYear(this.disabledDates.to)) ||
+          this.utils.getFullYear(date) <
+            this.utils.getFullYear(this.disabledDates.to)
         ) {
           disabledDates = true
         }
       }
-      if (typeof this.disabledDates.from !== 'undefined' && this.disabledDates.from) {
+      if (
+        typeof this.disabledDates.from !== 'undefined' &&
+        this.disabledDates.from
+      ) {
         if (
-          (this.utils.getMonth(date) > this.utils.getMonth(this.disabledDates.from) && this.utils.getFullYear(date) >= this.utils.getFullYear(this.disabledDates.from)) ||
-          this.utils.getFullYear(date) > this.utils.getFullYear(this.disabledDates.from)
+          (this.utils.getMonth(date) >
+            this.utils.getMonth(this.disabledDates.from) &&
+            this.utils.getFullYear(date) >=
+              this.utils.getFullYear(this.disabledDates.from)) ||
+          this.utils.getFullYear(date) >
+            this.utils.getFullYear(this.disabledDates.from)
         ) {
           disabledDates = true
         }
       }
 
-      if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date)) {
+      if (
+        typeof this.disabledDates.customPredictor === 'function' &&
+        this.disabledDates.customPredictor(date)
+      ) {
         disabledDates = true
       }
       return disabledDates
@@ -189,5 +251,4 @@ export default {
   }
 }
 // eslint-disable-next-line
-;
 </script>

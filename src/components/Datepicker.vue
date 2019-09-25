@@ -25,13 +25,15 @@
       @showCalendar="showCalendar"
       @closeCalendar="close"
       @typedDate="setTypedDate"
-      @clearDate="clearDate">
+      @clearDate="clearDate"
+    >
       <slot name="afterDateInput" slot="afterDateInput"></slot>
     </date-input>
 
     <!-- Day View -->
     <picker-day
       v-if="allowedToShowView('day')"
+      :showDateHeader="showDateHeader"
       :pageDate="pageDate"
       :selectedDate="selectedDate"
       :showDayView="showDayView"
@@ -51,13 +53,15 @@
       @selectDate="selectDate"
       @showMonthCalendar="showMonthCalendar"
       @showYearCalendar="showYearCalendar"
-      @selectedDisabled="selectDisabledDate">
+      @selectedDisabled="selectDisabledDate"
+    >
       <slot name="beforeCalendarHeader" slot="beforeCalendarHeader"></slot>
     </picker-day>
 
     <!-- Month View -->
     <picker-month
       v-if="allowedToShowView('month')"
+      :showDateHeader="showDateHeader"
       :pageDate="pageDate"
       :selectedDate="selectedDate"
       :showMonthView="showMonthView"
@@ -70,13 +74,15 @@
       :use-utc="useUtc"
       @selectMonth="selectMonth"
       @showYearCalendar="showYearCalendar"
-      @changedYear="setPageDate">
+      @changedYear="setPageDate"
+    >
       <slot name="beforeCalendarHeader" slot="beforeCalendarHeader"></slot>
     </picker-month>
 
     <!-- Year View -->
     <picker-year
       v-if="allowedToShowView('year')"
+      :showDateHeader="showDateHeader"
       :pageDate="pageDate"
       :selectedDate="selectedDate"
       :showYearView="showYearView"
@@ -88,7 +94,8 @@
       :isRtl="isRtl"
       :use-utc="useUtc"
       @selectYear="selectYear"
-      @changedDecade="setPageDate">
+      @changedDecade="setPageDate"
+    >
       <slot name="beforeCalendarHeader" slot="beforeCalendarHeader"></slot>
     </picker-year>
   </div>
@@ -114,6 +121,7 @@ export default {
     name: String,
     refName: String,
     id: String,
+    showDateHeader: Boolean,
     format: {
       type: [String, Function],
       default: 'dd.MM.yyyy'
@@ -259,7 +267,9 @@ export default {
     setInitialView () {
       const initialView = this.computedInitialView
       if (!this.allowedToShowView(initialView)) {
-        throw new Error(`initialView '${this.initialView}' cannot be rendered based on minimum '${this.minimumView}' and maximum '${this.maximumView}'`)
+        throw new Error(
+          `initialView '${this.initialView}' cannot be rendered based on minimum '${this.minimumView}' and maximum '${this.maximumView}'`
+        )
       }
       switch (initialView) {
         case 'year':
@@ -464,8 +474,7 @@ export default {
   }
 }
 // eslint-disable-next-line
-;
 </script>
 <style lang="stylus">
-@import '../styles/style'
+@import '../styles/style';
 </style>
