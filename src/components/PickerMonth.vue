@@ -7,9 +7,9 @@
   >
     <slot name="beforeCalendarHeader"></slot>
     <header class="vdp-datepicker__header vdp-datepicker__header_full-date" v-if="showDateHeader">
-      <span>{{ currDay }}</span>
-      <span>{{ currMonthName }}</span>
-      <span @click="showYearCalendar">{{ currYearName }}</span>
+      <span class="vdp-datepicker__control" @click="showDayCalendar">{{ currDay }}</span>
+      <span class="vdp-datepicker__control vdp-datepicker__control_active">{{ currMonthName }}</span>
+      <span class="vdp-datepicker__control" @click="showYearCalendar">{{ currYearName }}</span>
     </header>
     <div class="vdp-datepicker__body vdp-datepicker__body_picker_month">
       <span
@@ -177,6 +177,9 @@ export default {
         this.utils.getFullYear(this.disabledDates.from) <=
         this.utils.getFullYear(this.pageDate)
       )
+    },
+    showDayCalendar () {
+      this.$emit('showDayCalendar')
     },
     /**
      * Emits an event that shows the year calendar

@@ -73,6 +73,7 @@
       :isRtl="isRtl"
       :use-utc="useUtc"
       @selectMonth="selectMonth"
+      @showDayCalendar="showDayCalendar"
       @showYearCalendar="showYearCalendar"
       @changedYear="setPageDate"
     >
@@ -93,6 +94,8 @@
       :translation="translation"
       :isRtl="isRtl"
       :use-utc="useUtc"
+      @showMonthCalendar="showMonthCalendar"
+      @showDayCalendar="showDayCalendar"
       @selectYear="selectYear"
       @changedDecade="setPageDate"
     >
