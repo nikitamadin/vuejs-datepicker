@@ -194,7 +194,10 @@ export default {
        */
       calendarHeight: 0,
       resetTypedDate: new Date(),
-      utils: constructedDateUtils
+      utils: constructedDateUtils,
+      /*
+       */
+      day: 1
     }
   },
   watch: {
@@ -339,8 +342,37 @@ export default {
      * Set the selected date
      * @param {Number} timestamp
      */
-    setDate (timestamp) {
-      const date = new Date(timestamp)
+    setDay (day) {
+      const date = new Date(this.pageTimestamp)
+
+      date.setDate(day)
+
+      this.day = day
+      this.pageTimestamp = this.utils.setDate(new Date(date), 1)
+      this.selectedDate = date
+      this.setPageDate(date)
+      this.$emit('selected', date)
+      this.$emit('input', date)
+    },
+    setMonth (month) {
+      const date = new Date(this.pageTimestamp)
+
+      date.setMonth(month)
+      date.setDate(this.day)
+
+      this.pageTimestamp = this.utils.setDate(new Date(date), 1)
+      this.selectedDate = date
+      this.setPageDate(date)
+      this.$emit('selected', date)
+      this.$emit('input', date)
+    },
+    setYear (year) {
+      const date = new Date(this.pageTimestamp)
+
+      date.setFullYear(year)
+      date.setDate(this.day)
+
+      this.pageTimestamp = this.utils.setDate(new Date(date), 1)
       this.selectedDate = date
       this.setPageDate(date)
       this.$emit('selected', date)
@@ -360,10 +392,30 @@ export default {
      * @param {Object} date
      */
     selectDate (date) {
-      this.setDate(date.timestamp)
+      const dt = new Date(date.timestamp)
+
+      if (date.month) {
+        const month = dt.getMonth()
+
+        this.setMonth(month)
+      }
+
+      if (date.year) {
+        const year = dt.getFullYear()
+
+        this.setYear(year)
+      }
+
+      if (date.date) {
+        const d = dt.getDate()
+
+        this.setDay(d)
+      }
+
       if (!this.isInline) {
         this.close(true)
       }
+
       this.resetTypedDate = new Date()
     },
     /**
@@ -386,7 +438,10 @@ export default {
       //   this.selectDate(month)
       // }
       this.selectDate(month)
-      this.showDayCalendar()
+
+      if (!this.showDateHeader) {
+        this.showDayCalendar()
+      }
     },
     /**
      * @param {Object} year
@@ -402,7 +457,10 @@ export default {
       //   this.selectDate(year)
       // }
       this.selectDate(year)
-      this.showDayCalendar()
+
+      if (!this.showDateHeader) {
+        this.showDayCalendar()
+      }
     },
     /**
      * Set the datepicker value
