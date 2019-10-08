@@ -63,7 +63,7 @@ export default {
       // let dObj = this.useUtc
       //   ? new Date(Date.UTC(Math.floor(d.getUTCFullYear() / 10) * 10, d.getUTCMonth(), d.getUTCDate()))
       //   : new Date(Math.floor(d.getFullYear()), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
-      let dObj = new Date(Date.now())
+      let dObj = new Date(this.pageDate)
       for (let i = 0; i < 25; i++) {
         years.push({
           year: this.utils.getFullYear(dObj),
