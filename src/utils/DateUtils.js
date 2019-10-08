@@ -1,4 +1,4 @@
-import en from '../locale/translations/en'
+import ru from '../locale/translations/ru'
 
 const utils = {
   /**
@@ -167,7 +167,13 @@ const utils = {
    * @return {Number}
    */
   daysInMonth (year, month) {
-    return /8|3|5|10/.test(month) ? 30 : month === 1 ? (!(year % 4) && year % 100) || !(year % 400) ? 29 : 28 : 31
+    return /8|3|5|10/.test(month)
+      ? 30
+      : month === 1
+      ? (!(year % 4) && year % 100) || !(year % 400)
+        ? 29
+        : 28
+      : 31
   },
 
   /**
@@ -200,7 +206,7 @@ const utils = {
    * @return {String}
    */
   formatDate (date, format, translation) {
-    translation = (!translation) ? en : translation
+    translation = !translation ? ru : translation
     let year = this.getFullYear(date)
     let month = this.getMonth(date) + 1
     let day = this.getDate(date)
@@ -209,8 +215,14 @@ const utils = {
       .replace(/d/, day)
       .replace(/yyyy/, year)
       .replace(/yy/, String(year).slice(2))
-      .replace(/MMMM/, this.getMonthName(this.getMonth(date), translation.months))
-      .replace(/MMM/, this.getMonthNameAbbr(this.getMonth(date), translation.monthsAbbr))
+      .replace(
+        /MMMM/,
+        this.getMonthName(this.getMonth(date), translation.months)
+      )
+      .replace(
+        /MMM/,
+        this.getMonthNameAbbr(this.getMonth(date), translation.monthsAbbr)
+      )
       .replace(/MM/, ('0' + month).slice(-2))
       .replace(/M(?!a|ä|e)/, month)
       .replace(/su/, this.getNthSuffix(this.getDate(date)))
@@ -239,14 +251,18 @@ const utils = {
    * @return {Boolean}
    */
   validateDateInput (val) {
-    return val === null || val instanceof Date || typeof val === 'string' || typeof val === 'number'
+    return (
+      val === null ||
+      val instanceof Date ||
+      typeof val === 'string' ||
+      typeof val === 'number'
+    )
   }
 }
 
-export const makeDateUtils = useUtc => ({...utils, useUtc})
+export const makeDateUtils = useUtc => ({ ...utils, useUtc })
 
 export default {
   ...utils
 }
 // eslint-disable-next-line
-;
